@@ -23,9 +23,9 @@ class Api extends \Prefab
         $url = self::BASE_URL . $method;
         $options = [
             'http' => [
-                'header' => "Content-Type: application/json\r\nAuthorization: Bearer " . $f3->get(Base::CONFIG_KEY_TOKEN) . "\r\n",
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\nAuthorization: Bearer " . $f3->get(Base::CONFIG_KEY_TOKEN) . "\r\n",
                 'method' => 'POST',
-                'content' => json_encode($data)
+                'content' => http_build_query($data)
             ]
         ];
 
@@ -40,6 +40,8 @@ class Api extends \Prefab
         if (isset($result->ok) && $result->ok === false) {
             $log = new \Log("slack.log");
             $log->write("[API] Error response: " . $response);
+        } elseif ($f3->get('DEBUG') && isset($result->warning)) {
+            $log->write("[API] Warning: " . $result->warning);
         }
         return $result;
     }
@@ -57,7 +59,7 @@ class Api extends \Prefab
         return $this->call('chat.unfurl', [
             'channel' => $channel,
             'ts' => $ts,
-            'unfurls' => $unfurls,
+            'unfurls' => json_encode($unfurls),
         ]);
     }
 }
