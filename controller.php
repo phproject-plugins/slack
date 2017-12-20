@@ -10,9 +10,9 @@ class Controller extends \Controller
 {
     /**
      * Handle HTTP POST request
-     * @param Base  $f3
+     * @param \Base $f3
      */
-    public function post($f3)
+    public function post(\Base $f3)
     {
         $post = file_get_contents('php://input');
         $request = json_decode($post);
@@ -46,10 +46,10 @@ class Controller extends \Controller
      *
      * @link https://api.slack.com/events/link_shared
      *
-     * @param object $event
+     * @param \StdClass $event
      * @return void
      */
-    protected function linkShared(object $event)
+    protected function linkShared(\StdClass $event)
     {
         $f3 = \Base::instance();
         $baseUrl = $f3->get('site.url');

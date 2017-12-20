@@ -12,3 +12,4 @@ Clone the repo into the app/plugins/ directory of an existing Phproject installa
 3. Enable the Event Subscriptions feature and add the Request URL from your Phproject site
 4. Subscribe to the `link_shared` workspace event
 5. Add your Phproject site's domain to the App Unfurl Domains
+6. Install the app to your workspace from the Basic Information tab

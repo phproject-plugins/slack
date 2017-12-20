@@ -15,7 +15,7 @@ class Api extends \Prefab
      *
      * @param string $method
      * @param array  $data
-     * @return object
+     * @return \StdClass
      */
     public function call($method, array $data = [])
     {
@@ -43,7 +43,7 @@ class Api extends \Prefab
      * @param string $channel
      * @param string $ts
      * @param array  $unfurls
-     * @return object
+     * @return \StdClass
      */
     public function chat_unfurl($channel, $ts, array $unfurls)
     {
