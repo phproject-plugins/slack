@@ -20,14 +20,12 @@ class Api extends \Prefab
     public function call($method, array $data = [])
     {
         $f3 = \Base::instance();
-        $data = array_merge(['token' => $f3->get(Base::CONFIG_KEY_TOKEN)], $data);
-
         $url = self::BASE_URL . $method;
         $options = [
             'http' => [
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+                'header' => "Content-Type: application/json\r\nAuthorization: Bearer " . $f3->get(Base::CONFIG_KEY_TOKEN) . "\r\n",
                 'method' => 'POST',
-                'content' => http_build_query($data)
+                'content' => json_encode($data)
             ]
         ];
 
@@ -59,7 +57,7 @@ class Api extends \Prefab
         return $this->call('chat.unfurl', [
             'channel' => $channel,
             'ts' => $ts,
-            'unfurls' => json_encode($unfurls),
+            'unfurls' => $unfurls,
         ]);
     }
 }
