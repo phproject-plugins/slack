@@ -27,7 +27,7 @@ class Controller extends \Controller
 
         // Respond to URL verification challenge
         if ($request->type == 'url_verification') {
-            if ($f3->get("DEBUG")) {
+            if ($f3->get('DEBUG')) {
                 $log = new \Log("slack.log");
                 $log->write("Received URL verification challenge from Slack");
             }
@@ -38,9 +38,12 @@ class Controller extends \Controller
         }
 
         // Handle events
-        if ($f3->get("DEBUG")) {
+        if ($f3->get('DEBUG')) {
             $log = new \Log("slack.log");
             $log->write("Received event: " . $request->event->type);
+            if ($f3->get('DEBUG') >= 2) {
+                $log->write($post);
+            }
         }
         switch ($request->event->type) {
             case 'link_shared':
@@ -68,12 +71,14 @@ class Controller extends \Controller
                 continue;
             }
 
+            $path = substr($link->$url, strlen($baseUrl));
+
             // Issue link
             if (preg_match('@issues/([0-9]+)@', $path, $matches)) {
                 $issue = new \Model\Issue\Detail;
-                $issue->load($matches[1]);
+                $issue->load(['id = ? AND deleted_date IS NULL', $matches[1]]);
                 if ($issue->id) {
-                    $unfurls[$link] = [
+                    $unfurls[$link->$url] = [
                         'fallback' => $issue->name,
                         'title' => $issue->name,
                         'title_link' => "{$baseUrl}issues/{$issue->id}",
@@ -115,9 +120,9 @@ class Controller extends \Controller
             // User link
             if (preg_match('@user/([^/]+)@', $path, $matches)) {
                 $user = new \Model\User;
-                $user->load(['username = ?', $matches[1]]);
+                $user->load(['username = ? AND deleted_date IS NULL', $matches[1]]);
                 if ($user->id) {
-                    $unfurls[$link] = [
+                    $unfurls[$link->$url] = [
                         'fallback' => $user->name,
                         'title' => $user->name,
                         'title_link' => "{$baseUrl}user/{$user->username}",
@@ -140,9 +145,9 @@ class Controller extends \Controller
             }
         }
         if ($unfurls) {
-            if ($f3->get("DEBUG")) {
+            if ($f3->get('DEBUG')) {
                 $log = new \Log("slack.log");
-                $log->write("Unfurling URLs");
+                $log->write("Unfurling URLs: " . implode(', ', array_keys($unfurls)));
             }
             Api::instance()->chat_unfurl($event->channel, $event->message_ts, $unfurls);
         }
