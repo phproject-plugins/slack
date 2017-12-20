@@ -20,7 +20,7 @@ class Api extends \Prefab
     public function call($method, array $data = [])
     {
         $f3 = \Base::instance();
-        $data['token'] = $f3->get(Base::CONFIG_KEY_TOKEN);
+        $data = array_merge(['token' => $f3->get(Base::CONFIG_KEY_TOKEN)], $data);
 
         $url = self::BASE_URL . $method;
         $options = [
