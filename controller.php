@@ -132,6 +132,10 @@ class Controller extends \Controller
             }
         }
         if ($unfurls) {
+            if ($f3->get("DEBUG")) {
+                $log = new \Log("slack.log");
+                $log->write("Unfurling URLs");
+            }
             Api::instance()->chat_unfurl($event->channel, $event->message_ts, $unfurls);
         }
     }

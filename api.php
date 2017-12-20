@@ -31,6 +31,11 @@ class Api extends \Prefab
             ]
         ];
 
+        if ($f3->get("DEBUG")) {
+            $log = new \Log("slack.log");
+            $log->write("[API] Calling {$method}: " . http_build_query($data));
+        }
+
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
         $result = json_decode($response);
