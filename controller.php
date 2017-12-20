@@ -27,6 +27,10 @@ class Controller extends \Controller
 
         // Respond to URL verification challenge
         if ($request->type == 'url_verification') {
+            if ($f3->get("DEBUG")) {
+                $log = new \Log("slack.log");
+                $log->write("Received URL verification challenge from Slack");
+            }
             $this->_printJson([
                 'challenge' => $request->challenge
             ]);
@@ -34,6 +38,10 @@ class Controller extends \Controller
         }
 
         // Handle events
+        if ($f3->get("DEBUG")) {
+            $log = new \Log("slack.log");
+            $log->write("Received event: " . $request->event->type);
+        }
         switch ($request->event->type) {
             case 'link_shared':
                 $this->linkShared($request->event);
