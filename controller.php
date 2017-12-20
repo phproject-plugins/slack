@@ -71,14 +71,14 @@ class Controller extends \Controller
                 continue;
             }
 
-            $path = substr($link->$url, strlen($baseUrl));
+            $path = substr($link->url, strlen($baseUrl));
 
             // Issue link
             if (preg_match('@issues/([0-9]+)@', $path, $matches)) {
                 $issue = new \Model\Issue\Detail;
                 $issue->load(['id = ? AND deleted_date IS NULL', $matches[1]]);
                 if ($issue->id) {
-                    $unfurls[$link->$url] = [
+                    $unfurls[$link->url] = [
                         'fallback' => $issue->name,
                         'title' => $issue->name,
                         'title_link' => "{$baseUrl}issues/{$issue->id}",
@@ -122,7 +122,7 @@ class Controller extends \Controller
                 $user = new \Model\User;
                 $user->load(['username = ? AND deleted_date IS NULL', $matches[1]]);
                 if ($user->id) {
-                    $unfurls[$link->$url] = [
+                    $unfurls[$link->url] = [
                         'fallback' => $user->name,
                         'title' => $user->name,
                         'title_link' => "{$baseUrl}user/{$user->username}",
