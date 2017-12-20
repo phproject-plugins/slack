@@ -39,6 +39,10 @@ class Api extends \Prefab
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
         $result = json_decode($response);
+        if (isset($result->ok) && $result->ok === false) {
+            $log = new \Log("slack.log");
+            $log->write("[API] Error response: " . $response);
+        }
         return $result;
     }
 
