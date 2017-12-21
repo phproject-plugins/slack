@@ -23,7 +23,7 @@ class Api extends \Prefab
         $url = self::BASE_URL . $method;
         $options = [
             'http' => [
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\nAuthorization: Bearer " . $f3->get(Base::CONFIG_KEY_TOKEN) . "\r\n",
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\nAuthorization: Bearer " . $f3->get(Base::CONFIG_KEY_ACCESS_TOKEN) . "\r\n",
                 'method' => 'POST',
                 'content' => http_build_query($data)
             ]

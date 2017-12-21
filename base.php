@@ -11,6 +11,7 @@ namespace Plugin\Slack;
 class Base extends \Plugin
 {
     const CONFIG_KEY_TOKEN = "site.plugins.slack.token";
+    const CONFIG_KEY_ACCESS_TOKEN = "site.plugins.slack.access_token";
 
     /**
      * Initialize the plugin
@@ -27,7 +28,7 @@ class Base extends \Plugin
     public function _install()
     {
         $f3 = \Base::instance();
-        $f3->set("error", "Slack plugin is not set up. Add your Slack App's token in the plugin configuration.");
+        $f3->set("error", "Slack plugin is not set up. Add your Slack App's tokens in the plugin configuration.");
     }
 
     /**
@@ -37,7 +38,7 @@ class Base extends \Plugin
     public function _installed()
     {
         $f3 = \Base::instance();
-        return $f3->exists(self::CONFIG_KEY_TOKEN);
+        return $f3->exists(self::CONFIG_KEY_TOKEN) && $f3->eixsts(self::CONFIG_KEY_ACCESS_TOKEN);
     }
 
     /**
@@ -48,6 +49,9 @@ class Base extends \Plugin
         $f3 = \Base::instance();
         if ($f3->get('POST.token')) {
             \Model\Config::setVal(self::CONFIG_KEY_TOKEN, trim($f3->get('POST.token')));
+        }
+        if ($f3->get('POST.access_token')) {
+            \Model\Config::setVal(self::CONFIG_KEY_ACCESS_TOKEN, trim($f3->get('POST.access_token')));
         }
         echo \Helper\View::instance()->render("slack/view/admin.html");
     }
