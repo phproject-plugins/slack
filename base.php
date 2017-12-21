@@ -38,7 +38,7 @@ class Base extends \Plugin
     public function _installed()
     {
         $f3 = \Base::instance();
-        return $f3->exists(self::CONFIG_KEY_TOKEN) && $f3->eixsts(self::CONFIG_KEY_ACCESS_TOKEN);
+        return $f3->exists(self::CONFIG_KEY_TOKEN) && $f3->exists(self::CONFIG_KEY_ACCESS_TOKEN);
     }
 
     /**
