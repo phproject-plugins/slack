@@ -133,7 +133,7 @@ class Controller extends \Controller
                                 'short' => true,
                             ],
                             [
-                                'title' => $f3->get('dict.cols.email'),
+                                'title' => $f3->get('dict.email'),
                                 'value' => $user->email,
                                 'short' => true,
                             ],
